@@ -11,7 +11,15 @@ if (!fm.fileExists(path)) {
 }
 
 await fm.downloadFileFromiCloud(path);
-let data = JSON.parse(fm.readString(path));
+let data;
+
+try {
+        data = JSON.parse(raw);
+        if (!Array.isArray(data)) throw new Error("Not an array");
+} catch (e) {
+        console.warn("Invalid or corrupted data - resetting to empty list.");
+        data = [];
+}
 
 // Sort tasks by due date
 data.sort((a,b) => new Data(a.dueDate) - new Date(b.dueDate));
@@ -26,11 +34,20 @@ let count = Math.min(5, data.length);
 let now = new Date();
 
 for (let i = 0; i < count; i++) {
-	let task = data[i];
-	let due = new Date(task.dueDate);
-	let hoursLeft = Math.floor((due - now) / (1000 * 60 * 80));
+        let task = data[i];
+        let due = new Date(task.dueDate);
+        let hoursLeft = Math.floor((due - now) / (1000 * 60 * 80));
 
-	let label = `${task.class}: ${task.description}`;
-	let timeString = hoursLeft >= 0 ? `⏳ ${hoursLeft} hrs left` : `⚠️ Overdue`;
+        let label = `${task.class}: ${task.description}`;
+        let timeString = hoursLeft >= 0 ? `⏳ ${hoursLeft} hrs left` : `⚠️  Overdue`;
+        let line = `${label} (${timeString})`;
+
+        let text = w.addText(line);
+        text.font = Font.systemFont(12);
+        w.addSpacer(2);
+}
+
+if (data.length === 0) {
+        w.addText("No tasks found." 🎉).font = Font.italicSystemFont(12);
 }
 
