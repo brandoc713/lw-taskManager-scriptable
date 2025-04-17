@@ -1,8 +1,30 @@
-//icon-color: green; icon-glyph: tasks;
+//icon-color: green; icon-glyph: clipboad-list;
 
 let fm = FileManager.iCloud();
 let folder = fm.joinPath(fm.documentsDirectory(), "TaskManager");
 let path = fm.joinPath(folder, "tasks.json");
+
+// Handle widget display vs interactive mode
+if (config.runsInWidget){
+	let w = new ListWidget();
+	w.backgroundColor = ("7DF9FF");
+	w.centerAlignContent();
+
+	let emoji = w.addText("🗒️");
+	emoji.font = Font.systemFont(40);
+	emoji.centerAlignText();
+
+	w.addSpacer(4);
+
+	let label = w.addText("Tasks");
+	label.font = Font.mediumSystemFont(12);
+	label.textColor = Color.white();
+	lavel.centerAlignText();
+
+	Script.setWidget(w);
+	Script.complete();
+	return;
+}
 
 // Ensure files exists but should exist if running this script second.
 if (!fm.fileExists(folder)) fm.createDirectory(folder);
@@ -22,7 +44,7 @@ try {
 // === Menu ===
 let mainMenu = new Alert();
 mainMenu.title = "Task Manager";
-mainMenu.addAction("➕ Add Task");
+mainMenu.addAction("📋 Add Task");
 mainMenu.addAction("🗑 Delete Task");
 mainMenu.addCancelAction("Cancel");
 
@@ -35,6 +57,7 @@ if (choice === 0) {
 }
 
 saveData();
+Script.complete();
 
 function saveData() {
 	fm.writeString(path, JSON.stringify(data,null,2));
@@ -61,7 +84,13 @@ async function addTask() {
 	};
 
 	data.push(task);
-	await new Alert({ title: "Task Added", message: `${task.class}: ${task.description}` }).present();
+
+	// Replace this part:
+	let confirm = new Alert();
+	confirm.title = "Task Added";
+	confirm.message = `${task.class}: ${task.description}`;
+	confirm.addAction("Done");
+	await confirm.present();
 }
 
 
