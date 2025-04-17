@@ -58,7 +58,7 @@ let now = new Date();
 
 for (let i = 0; i < count; i++) {
   let task = data[i];
-  let due = new Date(task.dueDate);
+  let due = new Date(`${task.dueDate}T07:59:59`);
   let hoursLeft = Math.floor((due - now) / (1000 * 60 * 60)); // Correct unit
 
   let label = `${task.class}: ${task.description}`;
