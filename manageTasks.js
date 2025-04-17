@@ -7,8 +7,10 @@ let path = fm.joinPath(folder, "tasks.json");
 // Handle widget display vs interactive mode
 if (config.runsInWidget){
 	let w = new ListWidget();
-	w.backgroundColor = ("7DF9FF");
-	w.centerAlignContent();
+	w.backgroundColor = Color.dynamic(
+		new Color("#FFD580"),
+		new Color("#6A4ACD")
+	);
 
 	let emoji = w.addText("🗒️");
 	emoji.font = Font.systemFont(40);
@@ -19,7 +21,7 @@ if (config.runsInWidget){
 	let label = w.addText("Tasks");
 	label.font = Font.mediumSystemFont(12);
 	label.textColor = Color.white();
-	lavel.centerAlignText();
+	label.centerAlignText();
 
 	Script.setWidget(w);
 	Script.complete();
