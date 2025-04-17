@@ -2,7 +2,7 @@
 This is a simple task manager as my first project in the iOS app Scriptable. The goal of this project was to try out what I can accomplish with widgets and the app.
 
 # Preview
-![Widget Preview](dolist.png)
+![Widget Preview](doList.png)
 
 ## Files Explained
 ### taskManager.js
